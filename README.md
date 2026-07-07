@@ -12,7 +12,7 @@ Antes de correr nada, ten esto listo. Checklist completa con los enlaces de cada
 
 - **Node 20 o 22 LTS** ([nodejs.org](https://nodejs.org)) — usa una versión par. El repo trae `.nvmrc`: con nvm corre `nvm use`.
 - **yarn 1.x** — `npm install -g yarn`
-- **Git** y **[Cursor](https://cursor.com)** (el editor con IA).
+- **Git** y **[Cursor](https://cursor.com)** (el editor con IA). Si usas SSH con GitHub, configura tu clave antes del primer push.
 
 **Cuentas (todas con tier gratuito):**
 
