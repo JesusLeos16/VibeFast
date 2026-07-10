@@ -24,6 +24,9 @@ next-env.d.ts
 .env.production
 !.env.example
 
+# Cursor MCP (contiene API keys)
+.cursor/mcp.json
+
 # Misc
 .DS_Store
 *.pem

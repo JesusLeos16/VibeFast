@@ -2,35 +2,37 @@
 @plugin "daisyui";
 
 /* ============================================================
-   Tema de marca VibeFast (Flat Design)
-   Paleta: violeta (primary) + naranja (accent/CTA) + slate (neutral).
+   Tema de marca Kickiie — "Editorial Táctil" (diseño Stitch)
+   Paleta: papel cálido (base) + tinta (contenido) + rojo Kickiie.
    El primary real lo inyecta config.brand.primary desde layout.js
    como --color-primary inline (config = fuente de verdad).
+   Los nombres de tema se conservan ("vibefast") para no romper
+   el toggle de /docs ni el script de layout.js.
    ============================================================ */
 @plugin "daisyui/theme" {
   name: "vibefast";
   default: true;
   prefersdark: false;
   color-scheme: light;
-  --color-primary: #7c3aed;
+  --color-primary: #c92a2a;
   --color-primary-content: #ffffff;
-  --color-secondary: #6d28d9;
+  --color-secondary: #a61e1e;
   --color-secondary-content: #ffffff;
-  --color-accent: #f97316;
+  --color-accent: #c92a2a;
   --color-accent-content: #ffffff;
-  --color-neutral: #1e293b;
-  --color-neutral-content: #f8fafc;
-  --color-base-100: #ffffff;
-  --color-base-200: #f8fafc;
-  --color-base-300: #e2e8f0;
-  --color-base-content: #1e293b;
+  --color-neutral: #18181b;
+  --color-neutral-content: #fafaf7;
+  --color-base-100: #f9f7f2;
+  --color-base-200: #f1f0ec;
+  --color-base-300: #e6e4de;
+  --color-base-content: #18181b;
   --color-info: #0ea5e9;
-  --color-success: #16a34a;
-  --color-warning: #f59e0b;
-  --color-error: #dc2626;
+  --color-success: #2f9e44;
+  --color-warning: #f59f00;
+  --color-error: #c92a2a;
   --radius-box: 1rem;
-  --radius-field: 0.5rem;
-  --radius-selector: 0.5rem;
+  --radius-field: 0.625rem;
+  --radius-selector: 0.625rem;
 }
 
 @plugin "daisyui/theme" {
@@ -38,25 +40,25 @@
   default: false;
   prefersdark: true;
   color-scheme: dark;
-  --color-primary: #a78bfa;
+  --color-primary: #e35d5d;
   --color-primary-content: #ffffff;
-  --color-secondary: #8b5cf6;
-  --color-secondary-content: #1e1b2e;
-  --color-accent: #fb923c;
-  --color-accent-content: #1e1b2e;
-  --color-neutral: #e2e8f0;
-  --color-neutral-content: #0f172a;
-  --color-base-100: #0f172a;
-  --color-base-200: #1e293b;
-  --color-base-300: #334155;
-  --color-base-content: #e2e8f0;
+  --color-secondary: #c92a2a;
+  --color-secondary-content: #ffffff;
+  --color-accent: #e35d5d;
+  --color-accent-content: #1a1a1d;
+  --color-neutral: #e6e4de;
+  --color-neutral-content: #18181b;
+  --color-base-100: #18181b;
+  --color-base-200: #232326;
+  --color-base-300: #333336;
+  --color-base-content: #f1f0ec;
   --color-info: #38bdf8;
-  --color-success: #4ade80;
-  --color-warning: #fbbf24;
-  --color-error: #f87171;
+  --color-success: #51cf66;
+  --color-warning: #fcc419;
+  --color-error: #ff6b6b;
   --radius-box: 1rem;
-  --radius-field: 0.5rem;
-  --radius-selector: 0.5rem;
+  --radius-field: 0.625rem;
+  --radius-selector: 0.625rem;
 }
 
 html,
@@ -65,17 +67,77 @@ body {
 }
 
 body {
-  font-family: var(--font-dm-sans, ui-sans-serif, system-ui, sans-serif);
+  font-family: var(--font-body, ui-sans-serif, system-ui, sans-serif);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Tipografía de display: headings con Space Grotesk */
+/* Tipografía de display: headings con Bricolage Grotesque */
 h1,
 h2,
 h3,
 h4,
 .font-heading {
-  font-family: var(--font-space-grotesk, var(--font-dm-sans, ui-sans-serif, system-ui, sans-serif));
+  font-family: var(--font-display, var(--font-body, ui-sans-serif, system-ui, sans-serif));
+}
+
+/* ============================================================
+   Kickiie landing — primitivas del diseño "Editorial Táctil"
+   ============================================================ */
+
+/* Grano de papel sutil sobre toda la página (marca de la casa) */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Scroll reveal: elementos entran con fade + translate */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Stagger para hijos consecutivos */
+.reveal-stagger > *:nth-child(2) {
+  transition-delay: 0.08s;
+}
+.reveal-stagger > *:nth-child(3) {
+  transition-delay: 0.16s;
+}
+.reveal-stagger > *:nth-child(4) {
+  transition-delay: 0.24s;
+}
+
+/* Tarjeta PVC blanca del hero — hover sutil con profundidad 3D */
+.pvc-card {
+  transition: transform 0.3s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pvc-card:hover {
+    transform: translateY(-4px) rotateX(2deg) rotateY(2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pvc-card {
+    transition: none;
+  }
+  .reveal {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ============================================================

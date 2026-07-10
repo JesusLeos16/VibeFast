@@ -1,21 +1,19 @@
 import Hero from "@/components/landing/Hero"
-import Problem from "@/components/landing/Problem"
-import Features from "@/components/landing/Features"
-import Pricing from "@/components/landing/Pricing"
-import Testimonials from "@/components/landing/Testimonials"
+import Comparacion from "@/components/landing/Comparacion"
+import Bento from "@/components/landing/Bento"
+import ReglaDeOro from "@/components/landing/ReglaDeOro"
 import FAQ from "@/components/landing/FAQ"
 import FinalCta from "@/components/landing/FinalCta"
-import Waitlist from "@/components/landing/Waitlist"
 import config from "@/config"
+import Waitlist from "@/components/landing/Waitlist"
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Problem />
-      <Features />
-      {config.features.pricing && <Pricing />}
-      <Testimonials />
+      <Comparacion />
+      <Bento />
+      <ReglaDeOro />
       <FAQ />
       <FinalCta />
       {config.features.waitlist && <Waitlist />}

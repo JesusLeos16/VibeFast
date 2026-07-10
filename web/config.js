@@ -1,314 +1,245 @@
 // ============================================================
-// VibeFast · config.js
+// Kickiie · config.js
 // ------------------------------------------------------------
-// ESTE ES EL ARCHIVO MÁS IMPORTANTE DEL BOILERPLATE.
-// Todo el branding, copy, features y configuración del producto vive aquí.
-// Cambiar este archivo cambia el producto entero — sin abrir JSX.
-//
-// Estructura:
-//   - app:      identidad del producto (nombre, descripción, dominio, color)
-//   - features: toggles para encender/apagar funcionalidades
-//   - ai:       configuración de OpenAI
-//   - email:    configuración de Resend
-//   - auth:     providers habilitados
-//   - landing:  copy de la página pública
-//   - pricing:  planes (si features.payments está activo)
-//
-// Tip Sem 1: empieza editando `app` y `landing.hero` con los datos de tu producto.
+// Diseño de referencia: Stitch "Kickiie Martial Arts Manager"
+// pantalla "Rediseño Editorial y Táctil" (kickiie_redesign.html)
 // ============================================================
 
 const config = {
-  // -----------------------------------------------------------
-  // Identidad del producto
-  // -----------------------------------------------------------
   app: {
-    name: "VibeFast",
+    name: "Kickiie",
     description:
-      "Boilerplate AI-native para founders. Construido para el Curso de Vibecoding Remotto.",
-    domain: "vibefast.dev", // sin https://, sin www
-    locale: "es", // "es" | "en"
-    // URL pública: usa NEXT_PUBLIC_APP_URL en .env. En este config solo definimos el default.
+      "Gestión para academias de artes marciales con credenciales físicas QR: asistencia automática, portal de familias y panel del instructor.",
+    domain: "kickiie.com",
+    locale: "es",
     defaultUrl: "http://localhost:3000",
   },
 
-  // -----------------------------------------------------------
-  // Identidad visual
-  // -----------------------------------------------------------
   brand: {
-    // Color primario en HEX. DaisyUI lo aplica como --color-primary via theme.
-    primary: "#7c3aed", // violet-600
-    // Logo: puede ser texto o ruta a /public/logo.svg
-    logoText: "VibeFast",
-    logoSrc: null,
-    // Estilo del bordeado global (DaisyUI usa esto para botones, cards)
-    radius: "1rem",
+    primary: "#C92A2A",
+    logoText: "Kickiie",
+    // Wordmark PNG actual = variante oscura (fondo negro). Navbar usa texto tipográfico.
+    logoSrc: "/kickiie/logo-wordmark.png",
+    logoWordmarkDarkSrc: "/kickiie/logo-wordmark.png",
+    logoIconMarkSrc: "/kickiie/logo-icon-mark.png",
+    logoIconSrc: "/kickiie/logo-icon.svg",
+    logoIconDarkSrc: "/kickiie/logo-icon-dark.svg",
+    radius: "0.25rem",
   },
 
-  // -----------------------------------------------------------
-  // Toggles de features — encienden/apagan rutas y componentes
-  // -----------------------------------------------------------
+  assets: {
+    heroCard: "/kickiie/hero-card.png",
+    portalFamilias: "/kickiie/portal-familias.png",
+    kiosco: "/kickiie/kiosco.png",
+    generadorCredenciales: "/kickiie/generador-credenciales.png",
+    alumnos: "/kickiie/alumnos.png",
+    og: "/kickiie/og.png",
+  },
+
   features: {
-    waitlist: true, // Captura emails en landing — Sem 1
-    googleAuth: true, // Login con Google — Sem 2
-    emailLogin: false, // Magic link email — opcional
-    aiChat: true, // Chat AI en /chat — Sem 3
-    toolUse: true, // Tool use registry — Sem 4
-    agents: true, // LangGraph agents — Sem 5
-    mcp: true, // Servidor MCP en /api/mcp — Sem 5
-    rag: false, // RAG con pgvector — opcional
-    posthog: false, // Tracking — opcional
-    resend: true, // Email — Sem 1+
-    pricing: true, // Muestra la sección de precios en la landing (vitrina; el cobro real es `payments`)
-    payments: false, // Stripe — opcional, fuera del temario
-    hardware: false, // ESP-Claw bridge — Sem 8
+    waitlist: false,
+    googleAuth: true,
+    emailLogin: false,
+    aiChat: true,
+    toolUse: true,
+    agents: true,
+    mcp: true,
+    rag: false,
+    posthog: false,
+    resend: true,
+    pricing: false,
+    payments: false,
+    hardware: false,
   },
 
-  // -----------------------------------------------------------
-  // OpenAI
-  // -----------------------------------------------------------
   ai: {
-    chatModel: "gpt-4o-mini", // default barato y rápido
+    chatModel: "gpt-4o-mini",
     structuredModel: "gpt-4o-mini",
-    agentModel: "gpt-4o", // los agentes razonan mejor con full gpt-4o
+    agentModel: "gpt-4o",
     embeddingModel: "text-embedding-3-small",
     maxTokens: 1500,
     temperature: 0.4,
   },
 
-  // -----------------------------------------------------------
-  // Resend (email transaccional)
-  // -----------------------------------------------------------
   email: {
-    // Asegúrate de tener el dominio verificado en Resend antes de cambiar `from`.
-    // En desarrollo Resend permite enviar a tu propio correo desde `onboarding@resend.dev`.
-    from: "VibeFast <onboarding@resend.dev>",
-    replyTo: "hola@vibefast.dev",
-    supportEmail: "soporte@vibefast.dev",
+    from: "Kickiie <onboarding@resend.dev>",
+    replyTo: "hola@kickiie.com",
+    supportEmail: "soporte@kickiie.com",
   },
 
-  // -----------------------------------------------------------
-  // Auth providers
-  // -----------------------------------------------------------
   auth: {
     loginUrl: "/login",
     afterLoginUrl: "/dashboard",
     afterLogoutUrl: "/",
-    providers: ["google"], // se sincroniza con features.googleAuth / emailLogin
+    providers: ["google"],
   },
 
-  // -----------------------------------------------------------
-  // Landing — todo el copy de la página pública
-  // -----------------------------------------------------------
   landing: {
     nav: [
-      { label: "Características", href: "#features" },
-      { label: "Precios", href: "#pricing" },
-      { label: "Preguntas", href: "#faq" },
-      { label: "Docs", href: "/docs" },
+      { label: "Product", href: "#product" },
+      { label: "The Card", href: "#card" },
+      { label: "Dojos", href: "#dojos" },
+      { label: "FAQ", href: "#faq" },
     ],
+    navCta: { label: "Get Started", href: "#cierre" },
+    navLogin: { label: "Login", href: "/login" },
     hero: {
-      eyebrow: "Curso Vibecoding · Remotto × Startup Chihuahua",
-      title: "De 0 a producto AI-native en 11 semanas.",
+      eyebrow: "Gestión para academias de artes marciales",
+      title: "Una tarjeta. Toda tu academia.",
       subtitle:
-        "VibeFast es la plantilla del curso: Next.js, Supabase, OpenAI y MCP cableados desde el día 1. Tú extiendes con prompts en Cursor.",
-      cta: { label: "Únete al waitlist", href: "#waitlist" },
-      ctaSecondary: { label: "Ver docs", href: "/docs" },
+        "Kickiie convierte una credencial física con QR en el pase de lista, el portal de los papás y el orgullo de tus alumnos.",
+      cta: { label: "Crear mi academia" },
+      card: {
+        memberLabel: "MIEMBRO",
+        memberName: "Carlos Silva",
+        memberDetail: "Dojo Central • Cinturón Azul",
+      },
     },
-    problem: {
-      eyebrow: "El problema",
-      title: "Construir el andamiaje mata tu momentum.",
-      subtitle:
-        "La mayoría de founders se atoran semanas configurando lo mismo antes de tocar su idea real.",
+    comparacion: {
+      id: "product",
+      imprime: {
+        title: "Lo que se imprime.",
+        body: "Solo lo permanente: nombre, foto, QR y logo de la academia. Kickiie genera el diseño en PDF; tú lo mandas a imprimir en PVC, una vez por alumno.",
+        items: [
+          { icon: "Check", label: "Archivo listo para imprenta local" },
+          { icon: "Check", label: "Un QR estático, misma tarjeta para siempre" },
+        ],
+      },
+      cambia: {
+        title: "Lo que vive en Kickiie.",
+        body: "Grado, asistencias, racha, exámenes y comunicación con familias. Todo se actualiza en el software — sin volver a imprimir la tarjeta.",
+        items: [
+          { icon: "RefreshCw", label: "Datos en tiempo real" },
+          { icon: "CreditCard", label: "Portal de familias y panel del instructor" },
+        ],
+      },
+    },
+    bento: {
+      id: "dojos",
+      title: "Todo lo que tu academia necesita, en un solo lugar.",
       items: [
         {
-          icon: "Timer",
-          title: "Semanas en boilerplate",
-          body: "Auth, base de datos, deploy, emails… configuras lo mismo que todos antes de validar nada.",
+          id: "alumnos",
+          icon: "Users",
+          title: "Gestión de Alumnos",
+          body: "Perfiles, grupos, grado actual y notas. La base del sistema desde la que sale todo lo demás.",
+          tags: ["ASISTENCIA", "GRADOS"],
+          image: "/kickiie/alumnos.png",
+          span: "large",
         },
         {
-          icon: "Puzzle",
-          title: "Parálisis por herramientas",
-          body: "Cada capa tiene 10 opciones. Comparas en vez de construir y pierdes el hilo.",
+          id: "kiosco",
+          icon: "Monitor",
+          title: "Kiosco",
+          body: "Registro de asistencia en un escaneo. Rápido y sin fricción.",
+          image: "/kickiie/kiosco.png",
+          span: "small",
         },
         {
-          icon: "PlugZap",
-          title: "La IA no se integra sola",
-          body: "Structured outputs, tool use, agentes y MCP suenan bien hasta que hay que cablearlos.",
+          id: "tarjetas",
+          icon: "Badge",
+          title: "Generador de credenciales",
+          body: "Diseño automático con QR por alumno, exportable en PDF para PVC. No vendemos tarjetas: te damos el archivo para que imprimas donde prefieras.",
+          image: "/kickiie/generador-credenciales.png",
+          span: "small",
+        },
+        {
+          id: "familias",
+          icon: "UsersRound",
+          title: "Portal de Familias",
+          body: "Un espacio privado para padres. Seguimiento de progreso, comunicaciones importantes y gestión de cuotas en un solo lugar.",
+          image: "/kickiie/portal-familias.png",
+          span: "wide",
         },
       ],
     },
-    features: {
-      eyebrow: "Lo que ya viene listo",
-      title: "Stack completo, una sola decisión por capa.",
-      subtitle: "No pierdes tiempo eligiendo herramientas. Te enfocas en tu producto.",
-      items: [
-        {
-          icon: "Sparkles",
-          title: "AI nativa",
-          body: "OpenAI con structured outputs, tool use, agentes con LangGraph y MCP. Listo para activar.",
-        },
-        {
-          icon: "Database",
-          title: "Supabase + Auth",
-          body: "Base de datos con RLS, Google Auth y tablas pre-modeladas. No diseñas schema desde cero.",
-        },
-        {
-          icon: "Zap",
-          title: "Deploy en minutos",
-          body: "Vercel + Supabase Cloud. Una URL pública el primer día.",
-        },
-        {
-          icon: "BookOpen",
-          title: "Docs semana a semana",
-          body: "Tutoriales mapeados al temario del curso, con prompts de Cursor listos para copiar.",
-        },
-        {
-          icon: "Mail",
-          title: "Email + analytics",
-          body: "Resend para correos transaccionales y PostHog opcional para tracking.",
-        },
-        {
-          icon: "Cpu",
-          title: "Hardware-ready",
-          body: "Conexión MCP al ESP-Claw para el caso de hardware con IA del Módulo 3.",
-        },
-      ],
-    },
-    faq: {
-      eyebrow: "Preguntas frecuentes",
-      title: "Lo que todo founder pregunta antes de arrancar.",
-      items: [
-        {
-          q: "¿Necesito saber programar?",
-          a: "No. El curso asume founders no técnicos. Construyes describiendo en Cursor; el boilerplate hace el resto.",
-        },
-        {
-          q: "¿Cuánto cuesta correr esto?",
-          a: "Vercel y Supabase tienen tiers gratuitos generosos. OpenAI cobra por uso: con gpt-4o-mini, el costo de un MVP del curso ronda US$5-20.",
-        },
-        {
-          q: "¿Puedo cambiar el stack?",
-          a: "Sí, pero el curso (y las docs) asumen este stack. Cambiar pieza por pieza es posible después del curso.",
-        },
-        {
-          q: "¿Y si me atoro?",
-          a: "Las docs incluyen una sección de troubleshooting con los 20 errores más comunes. Además hay sesión semanal con el docente.",
-        },
-      ],
-    },
-    socialProof: {
-      text: "Founders del curso ya lanzaron con este stack",
-      logos: ["Remotto", "Startup Chihuahua", "Next.js", "Supabase", "OpenAI", "Vercel"],
-    },
-    testimonials: {
-      eyebrow: "Prueba social",
-      title: "Founders que ya lanzaron con VibeFast.",
-      subtitle: "Testimonios de cohortes anteriores del curso.",
-      items: [
-        {
-          quote:
-            "Pasé de una idea en Notion a un MVP con IA en producción en dos semanas. Nunca había tocado código.",
-          author: "Ana Márquez",
-          role: "Founder · Fisio en casa",
-        },
-        {
-          quote:
-            "El boilerplate ya traía auth, base de datos y el agente cableados. Solo describí lo que quería en Cursor.",
-          author: "Diego Sáenz",
-          role: "Founder · Tutor IA",
-        },
-        {
-          quote:
-            "Las docs semana a semana fueron mi mapa. Copiaba el prompt, ajustaba y avanzaba sin atorarme.",
-          author: "Lucía Fernández",
-          role: "Founder · Recetario inteligente",
-        },
-      ],
+    regla: {
+      id: "card",
+      quote: "El kiosco nunca rechaza a un alumno.",
+      attribution: "— La Regla de Oro de Kickiie",
     },
     finalCta: {
-      eyebrow: "Tu turno",
-      title: "Deja de configurar. Empieza a construir.",
+      id: "cierre",
+      title: "Pon tu academia en orden.",
       subtitle:
-        "Clona la plantilla, edita config.js y ten tu producto AI-native en producción esta semana.",
-      cta: { label: "Únete al waitlist", href: "#waitlist" },
-      ctaSecondary: { label: "Leer las docs", href: "/docs" },
+        "Configura tu dojo, registra alumnos y deja que el pase de lista se haga solo. La credencial física es el ritual de entrada; Kickiie es el software que la hace funcionar.",
+      cta: { label: "Crear mi academia", href: "#cierre" },
     },
     waitlist: {
-      eyebrow: "Únete primero",
-      title: "Sé de los primeros en saber.",
-      subtitle: "Te avisamos cuando abramos cupos para la siguiente cohorte.",
+      eyebrow: "Acceso anticipado",
+      title: "Sé de las primeras academias.",
+      subtitle: "Déjanos tu correo y te avisamos en cuanto Kickiie esté listo para tu dojo.",
       successMessage: "¡Listo! Te avisamos en cuanto haya novedades.",
       buttonLabel: "Quiero entrar",
       placeholder: "tu@email.com",
     },
     footer: {
-      tagline: "Construido para founders. Por Remotto × Startup Chihuahua.",
-      columns: [
-        {
-          title: "Producto",
-          links: [
-            { label: "Características", href: "#features" },
-            { label: "Precios", href: "#pricing" },
-            { label: "Preguntas", href: "#faq" },
-          ],
-        },
-        {
-          title: "Recursos",
-          links: [
-            { label: "Docs", href: "/docs" },
-            { label: "Quick start", href: "/docs/setup/quick-start" },
-            { label: "Troubleshooting", href: "/docs/troubleshooting/errores-comunes" },
-          ],
-        },
-        {
-          title: "Comunidad",
-          links: [
-            { label: "GitHub", href: "https://github.com/arampersand/VibeFast", external: true },
-            { label: "Remotto", href: "https://remotto.com", external: true },
-          ],
-        },
-      ],
-      // Compat: links planos usados en el bar inferior
+      tagline: "Una tarjeta. Toda tu academia.",
       links: [
-        { label: "Docs", href: "/docs" },
-        { label: "GitHub", href: "https://github.com/arampersand/VibeFast", external: true },
+        { label: "Política de privacidad", href: "#" },
+        { label: "Términos de servicio", href: "#" },
+        { label: "Contactar soporte", href: "#" },
+        { label: "Seguimiento de envío", href: "#" },
+      ],
+      copyright: "© 2026 Kickiie.",
+    },
+    problem: { eyebrow: "", title: "", subtitle: "", items: [] },
+    features: {
+      eyebrow: "",
+      title: "",
+      subtitle: "",
+      items: [
+        {
+          icon: "ScanLine",
+          title: "Kiosco de asistencia",
+          body: "El alumno escanea su tarjeta al llegar y el pase de lista se hace solo, con hora exacta.",
+        },
+        {
+          icon: "Users",
+          title: "Portal de familias",
+          body: "Los papás entran con su correo autorizado y ven asistencias, racha del mes y grado de sus hijos.",
+        },
+        {
+          icon: "IdCard",
+          title: "Credenciales físicas",
+          body: "Imprime tarjetas PVC con QR para cada alumno: un objeto que dice 'pertenezco a esta academia'.",
+        },
       ],
     },
+    faq: {
+      eyebrow: "Preguntas frecuentes",
+      title: "Dudas comunes de academias y familias",
+      items: [
+        {
+          q: "¿Necesito comprar un lector de QR especial?",
+          a: "No, cualquier celular o tablet con cámara funciona como kiosco en la entrada.",
+        },
+        {
+          q: "¿Qué pasa si un alumno pierde su tarjeta?",
+          a: "Se reimprime en cualquier imprenta local por unos pesos; su información vive en el sistema, no en la tarjeta.",
+        },
+        {
+          q: "¿Los papás necesitan crear una cuenta?",
+          a: "No, entran con el correo que la academia registró, sin contraseñas que olvidar.",
+        },
+        {
+          q: "¿Cualquiera que escanee la tarjeta puede ver los datos de mi hijo?",
+          a: "No, solo los correos autorizados por la academia tienen acceso al portal.",
+        },
+      ],
+    },
+    socialProof: { text: "", logos: [] },
+    testimonials: { eyebrow: "", title: "", subtitle: "", items: [] },
+    dosCaras: {},
+    modulos: {},
+    finalCtaLegacy: {},
   },
 
-  // -----------------------------------------------------------
-  // Pricing — vitrina de planes.
-  // Se muestra en la landing si features.pricing === true.
-  // El cobro real (Stripe) depende de features.payments.
-  // -----------------------------------------------------------
   pricing: {
     eyebrow: "Precios",
-    title: "Simple y sin sorpresas.",
-    subtitle: "Empieza gratis. Sube de plan cuando tu producto crezca.",
-    plans: [
-      {
-        id: "starter",
-        name: "Starter",
-        price: 0,
-        currency: "USD",
-        interval: "mes",
-        description: "Para probar el producto.",
-        features: ["Hasta 100 usuarios", "Soporte por email", "Branding VibeFast"],
-        cta: "Empezar gratis",
-      },
-      {
-        id: "pro",
-        name: "Pro",
-        price: 29,
-        currency: "USD",
-        interval: "mes",
-        description: "Para founders que ya facturan.",
-        features: ["Usuarios ilimitados", "Soporte prioritario", "Sin branding"],
-        cta: "Probar Pro",
-        highlighted: true,
-        stripePriceId: "", // llenar cuando se active payments
-      },
-    ],
+    title: "",
+    subtitle: "",
+    plans: [],
   },
 }
 

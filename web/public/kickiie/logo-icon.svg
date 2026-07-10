@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" role="img" aria-label="Kickiie">
+  <style>
+    .light { display: block; }
+    .dark { display: none; }
+    @media (prefers-color-scheme: dark) {
+      .light { display: none; }
+      .dark { display: block; }
+    }
+  </style>
+  <g class="light">
+    <rect width="32" height="32" rx="7" fill="#F9F7F2"/>
+    <image xlink:href="/kickiie/logo-icon-mark.png" x="1.6" y="1.2" width="28.8" height="29.6" preserveAspectRatio="xMidYMid meet"/>
+  </g>
+  <g class="dark">
+    <rect width="32" height="32" rx="7" fill="#18181B"/>
+    <image
+      xlink:href="/kickiie/logo-icon-mark.png"
+      x="1.6"
+      y="1.2"
+      width="28.8"
+      height="29.6"
+      preserveAspectRatio="xMidYMid meet"
+      style="filter: invert(1) hue-rotate(180deg) saturate(0.92)"
+    />
+  </g>
+</svg>

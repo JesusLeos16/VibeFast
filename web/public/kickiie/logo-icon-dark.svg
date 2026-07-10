@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Kickiie">
+  <rect x="3.5" y="3" width="6.5" height="26" rx="2.2" fill="#F9F7F2"/>
+  <path
+    d="M10.2 17.2 L22.2 6.8"
+    stroke="#F9F7F2"
+    stroke-width="6.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <rect x="21.5" y="3" width="6.5" height="13.5" rx="2.2" fill="#F9F7F2"/>
+  <rect x="21.5" y="18.5" width="3" height="3" rx="0.6" fill="#F9F7F2"/>
+  <rect x="24.8" y="18.5" width="3" height="3" rx="0.6" fill="#C92A2A"/>
+  <rect x="21.5" y="21.8" width="3" height="3" rx="0.6" fill="#F9F7F2"/>
+  <rect x="24.8" y="21.8" width="3" height="3" rx="0.6" fill="#F9F7F2"/>
+  <rect x="21.5" y="25.1" width="3" height="3" rx="0.6" fill="#F9F7F2"/>
+  <rect x="24.8" y="25.1" width="3" height="3" rx="0.6" stroke="#F9F7F2" stroke-width="0.9" fill="none"/>
+</svg>
