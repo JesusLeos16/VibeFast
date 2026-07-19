@@ -37,7 +37,7 @@ const config = {
   },
 
   features: {
-    waitlist: false,
+    waitlist: true,
     googleAuth: true,
     emailLogin: false,
     aiChat: true,
@@ -77,7 +77,6 @@ const config = {
   landing: {
     nav: [
       { label: "Product", href: "#product" },
-      { label: "The Card", href: "#card" },
       { label: "Dojos", href: "#dojos" },
       { label: "FAQ", href: "#faq" },
     ],

@@ -1,7 +1,6 @@
 import Hero from "@/components/landing/Hero"
 import Comparacion from "@/components/landing/Comparacion"
 import Bento from "@/components/landing/Bento"
-import ReglaDeOro from "@/components/landing/ReglaDeOro"
 import FAQ from "@/components/landing/FAQ"
 import FinalCta from "@/components/landing/FinalCta"
 import config from "@/config"
@@ -13,7 +12,6 @@ export default function HomePage() {
       <Hero />
       <Comparacion />
       <Bento />
-      <ReglaDeOro />
       <FAQ />
       <FinalCta />
       {config.features.waitlist && <Waitlist />}
