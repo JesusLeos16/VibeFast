@@ -8,7 +8,7 @@
 //   "use client"
 //   import { createClient } from "@/lib/supabase/client"
 //   const supabase = createClient()
-//   await supabase.from("core_items").select()
+//   await supabase.from("alumnos").select()
 // ============================================================
 
 import { createBrowserClient } from "@supabase/ssr"

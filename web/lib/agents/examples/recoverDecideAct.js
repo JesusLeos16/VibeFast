@@ -2,7 +2,7 @@
 // Agente de ejemplo · recover → decide → act
 // ------------------------------------------------------------
 // Instancia concreta del wrapper genérico (../graph.js) con:
-//   - las 3 tools del registry (crear_item, buscar_items, enviar_email)
+//   - las 3 tools del registry (crear_alumno, buscar_alumnos, enviar_email)
 //   - un system prompt en español
 //   - auditoría best-effort de cada tool call vía logToolCall
 //

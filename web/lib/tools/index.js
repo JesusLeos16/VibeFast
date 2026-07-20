@@ -9,8 +9,8 @@
 // lib/tools/examples/ y la registra aquí. El resto es genérico.
 // ============================================================
 
-import { crearItem } from "./examples/crearItem.js"
-import { buscarItems } from "./examples/buscarItems.js"
+import { crearAlumno } from "./examples/crearAlumno.js"
+import { buscarAlumnos } from "./examples/buscarAlumnos.js"
 import { enviarEmail } from "./examples/enviarEmail.js"
 
 const registry = new Map()
@@ -38,4 +38,4 @@ export async function executeTool(name, args) {
 }
 
 // Auto-registro de los ejemplos incluidos.
-;[crearItem, buscarItems, enviarEmail].forEach(registerTool)
+;[crearAlumno, buscarAlumnos, enviarEmail].forEach(registerTool)
