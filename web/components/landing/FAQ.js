@@ -4,24 +4,36 @@ export default function FAQ() {
   const { eyebrow, title, items } = config.landing.faq
 
   return (
-    <section id="faq" className="border-t border-base-200 bg-base-200/40 py-20 md:py-28">
-      <div className="mx-auto max-w-3xl px-4">
-        <div className="text-center">
-          <p className="text-sm font-medium uppercase tracking-wider text-primary">{eyebrow}</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">{title}</h2>
+    <section id="faq" className="border-t border-base-300/70 px-4 py-12 md:px-16 md:py-14">
+      <div className="mx-auto max-w-5xl">
+        <div className="max-w-xl text-left">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-primary">
+            {eyebrow}
+          </p>
+          <h2 className="mt-1.5 text-3xl font-extrabold tracking-tight md:text-[2.15rem] md:leading-[1.15]">
+            {title}
+          </h2>
         </div>
 
-        <div className="mt-12 space-y-3">
+        <div className="mt-8 max-w-2xl border-t border-base-300">
           {items.map((item, i) => (
             <details
               key={i}
-              className="group rounded-xl border border-base-300 bg-base-100 p-5 transition open:shadow-sm"
+              open={i === 0}
+              className="group border-b border-base-300"
             >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
-                {item.q}
-                <span className="text-base-content/40 transition group-open:rotate-45">+</span>
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
+                <span>{item.q}</span>
+                <span className="shrink-0 text-lg font-normal text-primary group-open:hidden">
+                  +
+                </span>
+                <span className="hidden shrink-0 text-lg font-normal text-primary group-open:inline">
+                  –
+                </span>
               </summary>
-              <p className="mt-3 text-sm leading-6 text-base-content/70">{item.a}</p>
+              <p className="max-w-lg pb-4 pr-8 text-sm leading-relaxed text-base-content/65">
+                {item.a}
+              </p>
             </details>
           ))}
         </div>

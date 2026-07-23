@@ -1,15 +1,16 @@
 // ============================================================
 // Kickiie · config.js
 // ------------------------------------------------------------
-// Diseño de referencia: Stitch "Kickiie Martial Arts Manager"
-// pantalla "Rediseño Editorial y Táctil" (kickiie_redesign.html)
+// Kickiie = sistema de gestión para academias.
+// La credencial física con QR es el diferenciador de acceso,
+// no el producto completo.
 // ============================================================
 
 const config = {
   app: {
     name: "Kickiie",
     description:
-      "Gestión para academias de artes marciales con credenciales físicas QR: asistencia automática, portal de familias y panel del instructor.",
+      "Sistema de gestión para academias de artes marciales: alumnos, asistencia automática, portal de familias y panel del instructor. La credencial física con QR es el acceso al sistema.",
     domain: "kickiie.com",
     locale: "es",
     defaultUrl: "http://localhost:3000",
@@ -18,7 +19,6 @@ const config = {
   brand: {
     primary: "#C92A2A",
     logoText: "Kickiie",
-    // Wordmark PNG actual = variante oscura (fondo negro). Navbar usa texto tipográfico.
     logoSrc: "/kickiie/logo-wordmark.png",
     logoWordmarkDarkSrc: "/kickiie/logo-wordmark.png",
     logoIconMarkSrc: "/kickiie/logo-icon-mark.png",
@@ -76,139 +76,155 @@ const config = {
 
   landing: {
     nav: [
-      { label: "Product", href: "#product" },
-      { label: "Dojos", href: "#dojos" },
+      { label: "Sistema", href: "#sistema" },
+      { label: "Módulos", href: "#modulos" },
+      { label: "Credencial", href: "#credencial" },
       { label: "FAQ", href: "#faq" },
     ],
-    navCta: { label: "Get Started", href: "#cierre" },
-    navLogin: { label: "Login", href: "/login" },
+    navCta: { label: "Entrar a Kickiie", href: "/login" },
+    navLogin: { label: "Entrar a Kickiie", href: "/login" },
     hero: {
-      eyebrow: "Gestión para academias de artes marciales",
-      title: "Una tarjeta. Toda tu academia.",
-      subtitle:
-        "Kickiie convierte una credencial física con QR en el pase de lista, el portal de los papás y el orgullo de tus alumnos.",
-      cta: { label: "Crear mi academia" },
+      eyebrow: "Gestión para academias",
+      title: "Tu academia, sin libretas ni caos.",
+      subtitle: "Controla alumnos, asistencias y familias desde un solo lugar.",
+      cta: { label: "Entrar al sistema", href: "/login" },
       card: {
         memberLabel: "MIEMBRO",
         memberName: "Carlos Silva",
         memberDetail: "Dojo Central • Cinturón Azul",
       },
     },
-    comparacion: {
-      id: "product",
-      imprime: {
-        title: "Lo que se imprime.",
-        body: "Solo lo permanente: nombre, foto, QR y logo de la academia. Kickiie genera el diseño en PDF; tú lo mandas a imprimir en PVC, una vez por alumno.",
-        items: [
-          { icon: "Check", label: "Archivo listo para imprenta local" },
-          { icon: "Check", label: "Un QR estático, misma tarjeta para siempre" },
-        ],
-      },
-      cambia: {
-        title: "Lo que vive en Kickiie.",
-        body: "Grado, asistencias, racha, exámenes y comunicación con familias. Todo se actualiza en el software — sin volver a imprimir la tarjeta.",
-        items: [
-          { icon: "RefreshCw", label: "Datos en tiempo real" },
-          { icon: "CreditCard", label: "Portal de familias y panel del instructor" },
-        ],
-      },
+    features: {
+      eyebrow: "Qué incluye",
+      title: "Lo que necesitas para operar tu academia.",
+      subtitle: "La credencial abre el acceso. Kickiie organiza lo que ocurre después.",
+      primary: [
+        {
+          icon: "ScanLine",
+          title: "Kiosco de asistencia",
+          body: "El alumno escanea al llegar y queda registrado con hora exacta.",
+        },
+        {
+          icon: "Users",
+          title: "Gestión de alumnos",
+          body: "Perfiles, grupos, grado y notas en un solo panel.",
+        },
+      ],
+      secondary: [
+        {
+          icon: "IdCard",
+          title: "Credencial física con QR",
+          body: "Acceso real al kiosco; tú imprimes en PVC local.",
+        },
+        {
+          icon: "UsersRound",
+          title: "Portal de familias",
+          body: "Papás ven asistencias, racha y grado sin llamarte.",
+        },
+        {
+          icon: "TrendingUp",
+          title: "Progreso y deserción",
+          body: "Actúa antes de perder al alumno, no cuando ya no vuelve.",
+        },
+      ],
+      items: [],
     },
     bento: {
-      id: "dojos",
-      title: "Todo lo que tu academia necesita, en un solo lugar.",
+      id: "modulos",
+      title: "Todo el sistema, en un solo lugar.",
       items: [
-        {
-          id: "alumnos",
-          icon: "Users",
-          title: "Gestión de Alumnos",
-          body: "Perfiles, grupos, grado actual y notas. La base del sistema desde la que sale todo lo demás.",
-          tags: ["ASISTENCIA", "GRADOS"],
-          image: "/kickiie/alumnos.png",
-          span: "large",
-        },
         {
           id: "kiosco",
           icon: "Monitor",
-          title: "Kiosco",
-          body: "Registro de asistencia en un escaneo. Rápido y sin fricción.",
+          title: "Kiosco de asistencia",
+          body: "El alumno llega, escanea y queda registrado con hora exacta.",
           image: "/kickiie/kiosco.png",
+          span: "large",
+        },
+        {
+          id: "alumnos",
+          icon: "Users",
+          title: "Gestión de alumnos",
+          body: "Perfiles, grupos, grado actual y notas. La base del sistema.",
+          image: "/kickiie/alumnos.png",
           span: "small",
         },
         {
           id: "tarjetas",
-          icon: "Badge",
-          title: "Generador de credenciales",
-          body: "Diseño automático con QR por alumno, exportable en PDF para PVC. No vendemos tarjetas: te damos el archivo para que imprimas donde prefieras.",
+          icon: "RectangleHorizontal",
+          title: "Credencial con QR",
+          body: "Genera el archivo con QR y envíalo a tu imprenta local.",
           image: "/kickiie/generador-credenciales.png",
           span: "small",
         },
         {
           id: "familias",
           icon: "UsersRound",
-          title: "Portal de Familias",
-          body: "Un espacio privado para padres. Seguimiento de progreso, comunicaciones importantes y gestión de cuotas en un solo lugar.",
+          title: "Portal de familias",
+          body: "Espacio privado para papás: progreso, asistencias y comunicación sin fricción.",
           image: "/kickiie/portal-familias.png",
           span: "wide",
         },
       ],
     },
+    comparacion: {
+      id: "credencial",
+      headline: "La tarjeta abre la puerta. Kickiie es el sistema.",
+      eyebrow: "Diferenciador",
+      sistema: {
+        title: "Lo que vive en Kickiie.",
+        body: "Alumnos, grados, asistencias y familias se actualizan todos los días.",
+        items: [
+          "Información siempre actualizada",
+          "Panel del instructor y acceso familiar",
+        ],
+      },
+      tarjeta: {
+        title: "Lo que se imprime una vez.",
+        body: "Nombre, foto y QR se imprimen una vez. El sistema sigue cambiando sin reemplazar la tarjeta.",
+        items: [
+          "PDF listo para imprenta local",
+          "El mismo QR para cada acceso",
+        ],
+      },
+    },
     regla: {
       id: "card",
       quote: "El kiosco nunca rechaza a un alumno.",
-      attribution: "— La Regla de Oro de Kickiie",
+      attribution: "— Kickiie",
     },
     finalCta: {
       id: "cierre",
-      title: "Pon tu academia en orden.",
-      subtitle:
-        "Configura tu dojo, registra alumnos y deja que el pase de lista se haga solo. La credencial física es el ritual de entrada; Kickiie es el software que la hace funcionar.",
-      cta: { label: "Crear mi academia", href: "#cierre" },
+      title: "Entra y pon tu academia en orden.",
+      subtitle: "Gestiona alumnos y asistencias desde Kickiie.",
+      cta: { label: "Entrar a Kickiie", href: "/login" },
     },
     waitlist: {
-      eyebrow: "Acceso anticipado",
-      title: "Sé de las primeras academias.",
-      subtitle: "Déjanos tu correo y te avisamos en cuanto Kickiie esté listo para tu dojo.",
+      eyebrow: "Kickiie está abriendo",
+      title: "¿Tu academia quiere probar Kickiie primero?",
+      subtitle: "Déjanos tu correo y te avisamos cuando abramos nuevos accesos.",
       successMessage: "¡Listo! Te avisamos en cuanto haya novedades.",
-      buttonLabel: "Quiero entrar",
-      placeholder: "tu@email.com",
+      buttonLabel: "Avisarme",
+      placeholder: "correo de la academia",
     },
     footer: {
-      tagline: "Una tarjeta. Toda tu academia.",
+      tagline: "El sistema de gestión para academias de artes marciales.",
       links: [
-        { label: "Política de privacidad", href: "#" },
-        { label: "Términos de servicio", href: "#" },
-        { label: "Contactar soporte", href: "#" },
-        { label: "Seguimiento de envío", href: "#" },
+        { label: "Privacidad", href: "#" },
+        { label: "Términos", href: "#" },
+        { label: "Soporte", href: "#" },
       ],
       copyright: "© 2026 Kickiie.",
     },
     problem: { eyebrow: "", title: "", subtitle: "", items: [] },
-    features: {
-      eyebrow: "",
-      title: "",
-      subtitle: "",
-      items: [
-        {
-          icon: "ScanLine",
-          title: "Kiosco de asistencia",
-          body: "El alumno escanea su tarjeta al llegar y el pase de lista se hace solo, con hora exacta.",
-        },
-        {
-          icon: "Users",
-          title: "Portal de familias",
-          body: "Los papás entran con su correo autorizado y ven asistencias, racha del mes y grado de sus hijos.",
-        },
-        {
-          icon: "IdCard",
-          title: "Credenciales físicas",
-          body: "Imprime tarjetas PVC con QR para cada alumno: un objeto que dice 'pertenezco a esta academia'.",
-        },
-      ],
-    },
     faq: {
       eyebrow: "Preguntas frecuentes",
-      title: "Dudas comunes de academias y familias",
+      title: "Preguntas reales antes de usar Kickiie.",
       items: [
+        {
+          q: "¿Kickiie es solo una tarjeta?",
+          a: "No. Kickiie es el sistema de gestión (alumnos, asistencia, familias). La credencial con QR es el acceso físico al kiosco.",
+        },
         {
           q: "¿Necesito comprar un lector de QR especial?",
           a: "No, cualquier celular o tablet con cámara funciona como kiosco en la entrada.",

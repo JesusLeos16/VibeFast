@@ -6,18 +6,20 @@ export default function FinalCta() {
   const { id, title, subtitle, cta } = config.landing.finalCta
 
   return (
-    <section id={id} className="flex flex-col items-center px-4 py-20 text-center md:px-16 md:py-24">
-      <Reveal className="max-w-lg">
-        <h2 className="mb-6 text-3xl font-extrabold tracking-tight md:text-[40px] md:leading-[1.12]">
-          {title}
-        </h2>
-        <p className="mb-10 text-base leading-relaxed text-base-content/70">{subtitle}</p>
-        <Link
-          href={cta.href}
-          className="inline-block rounded bg-neutral px-8 py-4 text-[15px] font-semibold text-neutral-content transition-all duration-300 hover:-translate-y-px hover:bg-primary active:translate-y-0 active:scale-[0.98]"
-        >
-          {cta.label}
-        </Link>
+    <section id={id} className="border-t border-base-300/70 px-4 py-12 md:px-16 md:py-14">
+      <Reveal className="mx-auto max-w-5xl text-left">
+        <div className="max-w-md translate-x-0 md:translate-x-2">
+          <h2 className="mb-3 text-3xl font-extrabold tracking-tight md:text-[2.15rem] md:leading-[1.15]">
+            {title}
+          </h2>
+          <p className="mb-7 text-base leading-relaxed text-base-content/70">{subtitle}</p>
+          <Link
+            href={cta.href}
+            className="inline-flex rounded-sm bg-primary px-6 py-3 text-[14px] font-semibold text-primary-content transition-opacity hover:opacity-90"
+          >
+            {cta.label}
+          </Link>
+        </div>
       </Reveal>
     </section>
   )

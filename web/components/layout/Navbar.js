@@ -4,11 +4,11 @@ import config from "@/config"
 import Logo from "@/components/Logo"
 
 export default function Navbar() {
-  const { nav, navCta, navLogin } = config.landing
+  const { nav, navCta } = config.landing
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-base-300 bg-base-100/85 backdrop-blur-md">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4 md:px-16">
+    <header className="sticky top-0 z-50 w-full border-b border-base-300/80 bg-base-100/90 backdrop-blur-md">
+      <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-2.5 md:px-16 md:py-3">
         <div className="flex items-center gap-2">
           <div className="dropdown md:hidden">
             <label tabIndex={0} className="btn btn-ghost btn-sm px-2" aria-label="Abrir menú">
@@ -23,19 +23,22 @@ export default function Navbar() {
                   <Link href={item.href}>{item.label}</Link>
                 </li>
               ))}
+              <li>
+                <Link href={navCta.href}>{navCta.label}</Link>
+              </li>
             </ul>
           </div>
-          <Link href="/">
-            <Logo />
+          <Link href="/" className="inline-flex items-center">
+            <Logo className="text-[1.55rem] md:text-[1.7rem]" />
           </Link>
         </div>
 
-        <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-5 md:flex">
           {nav.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="text-[15px] font-semibold text-base-content/70 transition-colors hover:text-primary"
+                className="text-[14px] font-semibold text-base-content/65 transition-colors hover:text-primary"
               >
                 {item.label}
               </Link>
@@ -43,22 +46,12 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-4">
-          {config.features.googleAuth && (
-            <Link
-              href={navLogin.href}
-              className="hidden text-[15px] font-semibold text-base-content transition-opacity hover:opacity-80 md:inline"
-            >
-              {navLogin.label}
-            </Link>
-          )}
-          <Link
-            href={navCta.href}
-            className="rounded bg-primary px-6 py-3 text-[15px] font-semibold text-primary-content transition-all duration-200 hover:-translate-y-px hover:opacity-90 active:translate-y-0 active:scale-[0.98]"
-          >
-            {navCta.label}
-          </Link>
-        </div>
+        <Link
+          href={navCta.href}
+          className="rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-primary-content transition-opacity hover:opacity-90 sm:px-5 sm:py-2.5 sm:text-[14px]"
+        >
+          {navCta.label}
+        </Link>
       </nav>
     </header>
   )

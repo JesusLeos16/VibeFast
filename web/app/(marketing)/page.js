@@ -1,6 +1,7 @@
 import Hero from "@/components/landing/Hero"
-import Comparacion from "@/components/landing/Comparacion"
+import Features from "@/components/landing/Features"
 import Bento from "@/components/landing/Bento"
+import Comparacion from "@/components/landing/Comparacion"
 import FAQ from "@/components/landing/FAQ"
 import FinalCta from "@/components/landing/FinalCta"
 import config from "@/config"
@@ -10,8 +11,11 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Comparacion />
+      <div id="sistema">
+        <Features />
+      </div>
       <Bento />
+      <Comparacion />
       <FAQ />
       <FinalCta />
       {config.features.waitlist && <Waitlist />}
