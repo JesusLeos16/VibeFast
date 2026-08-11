@@ -3,6 +3,14 @@ import { notFound, redirect } from "next/navigation"
 import { getAcademyContext } from "@/lib/kickiie/academy"
 import { calcularEdad, cintaLabel, CINTAS_LIMA_LAMA } from "@/lib/kickiie/cintas"
 import {
+  calcularMontoEsperado,
+  estadoFinanciero,
+  labelEstadoFinanciero,
+  METODOS_PAGO,
+} from "@/lib/kickiie/pagos"
+import RegistrarPagoForm from "@/components/kickiie/RegistrarPagoForm"
+import { cancelarPago } from "../../pagos/actions"
+import {
   addAlumnoAFamilia,
   addTutor,
   toggleAlumnoStatus,
@@ -11,6 +19,8 @@ import {
 
 export const metadata = { title: "Familia" }
 
+const METODO_MAP = Object.fromEntries(METODOS_PAGO.map((m) => [m.value, m.label]))
+
 export default async function FamiliaDetailPage({ params }) {
   const { id } = await params
   const { academia, supabase, membership } = await getAcademyContext()
@@ -18,7 +28,7 @@ export default async function FamiliaDetailPage({ params }) {
 
   const { data: familia } = await supabase
     .from("familias")
-    .select("id, nombre, notas, tutores(*), alumnos(*)")
+    .select("id, nombre, notas, fecha_vencimiento, tutores(*), alumnos(*)")
     .eq("id", id)
     .eq("academia_id", academia.id)
     .maybeSingle()
@@ -27,6 +37,25 @@ export default async function FamiliaDetailPage({ params }) {
 
   const tutores = familia.tutores || []
   const alumnos = familia.alumnos || []
+  const nActivos = alumnos.filter((a) => a.status === "active").length
+
+  const [{ data: plan }, { data: pagos }] = await Promise.all([
+    supabase
+      .from("academia_plan_config")
+      .select("precio_base, precio_adicional, moneda")
+      .eq("academia_id", academia.id)
+      .maybeSingle(),
+    supabase
+      .from("pagos")
+      .select("id, monto, fecha_pago, metodo, periodos, status, notas")
+      .eq("familia_id", id)
+      .eq("academia_id", academia.id)
+      .order("fecha_pago", { ascending: false })
+      .limit(20),
+  ])
+
+  const montoSugerido = calcularMontoEsperado(nActivos, plan || {})
+  const fin = estadoFinanciero(familia.fecha_vencimiento)
 
   return (
     <div className="space-y-8">
@@ -34,10 +63,58 @@ export default async function FamiliaDetailPage({ params }) {
         <Link href="/familias" className="text-sm text-primary hover:underline">
           ← Familias
         </Link>
-        <h1 className="mt-2 text-2xl font-bold tracking-tight">
-          Familia {familia.nombre}
-        </h1>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl font-bold tracking-tight">
+            Familia {familia.nombre}
+          </h1>
+          <span
+            className={
+              fin === "vencido"
+                ? "badge badge-error"
+                : fin === "al_corriente"
+                  ? "badge badge-success"
+                  : "badge badge-ghost"
+            }
+          >
+            {labelEstadoFinanciero(fin)}
+          </span>
+        </div>
+        <p className="mt-1 text-sm text-base-content/70">
+          Vence: {familia.fecha_vencimiento || "sin fecha"} · {nActivos} alumno
+          {nActivos === 1 ? "" : "s"} activo{nActivos === 1 ? "" : "s"}
+        </p>
       </div>
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold">Pagos</h2>
+        <RegistrarPagoForm
+          familiaId={familia.id}
+          montoSugerido={montoSugerido}
+          moneda={plan?.moneda || "MXN"}
+        />
+        <ul className="space-y-2">
+          {(pagos || []).map((p) => (
+            <li
+              key={p.id}
+              className="flex flex-wrap items-center justify-between gap-2 rounded-box border border-base-200 bg-base-100 px-3 py-2 text-sm"
+            >
+              <span>
+                {p.fecha_pago} · ${Number(p.monto).toLocaleString("es-MX")} ·{" "}
+                {METODO_MAP[p.metodo] || p.metodo}
+                {p.status === "cancelado" ? " (cancelado)" : ""}
+              </span>
+              {p.status === "activo" ? (
+                <form action={cancelarPago}>
+                  <input type="hidden" name="pago_id" value={p.id} />
+                  <button type="submit" className="btn btn-ghost btn-xs">
+                    Cancelar
+                  </button>
+                </form>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Tutores</h2>
@@ -118,7 +195,12 @@ export default async function FamiliaDetailPage({ params }) {
                           : "font-medium"
                       }
                     >
-                      {a.nombre}
+                      <Link
+                        href={`/alumnos/${a.id}`}
+                        className="hover:text-primary hover:underline"
+                      >
+                        {a.nombre}
+                      </Link>
                     </p>
                     <p className="text-sm text-base-content/60">
                       {cintaLabel(a.cinta)}
@@ -126,13 +208,21 @@ export default async function FamiliaDetailPage({ params }) {
                       {a.telefono ? ` · ${a.telefono}` : ""}
                     </p>
                   </div>
-                  <form action={toggleAlumnoStatus}>
-                    <input type="hidden" name="id" value={a.id} />
-                    <input type="hidden" name="status" value={a.status} />
-                    <button type="submit" className="btn btn-ghost btn-xs">
-                      {a.status === "inactive" ? "Reactivar" : "Inactivar"}
-                    </button>
-                  </form>
+                  <div className="flex items-center gap-1">
+                    <Link
+                      href={`/alumnos/${a.id}`}
+                      className="btn btn-ghost btn-xs"
+                    >
+                      Expediente
+                    </Link>
+                    <form action={toggleAlumnoStatus}>
+                      <input type="hidden" name="id" value={a.id} />
+                      <input type="hidden" name="status" value={a.status} />
+                      <button type="submit" className="btn btn-ghost btn-xs">
+                        {a.status === "inactive" ? "Reactivar" : "Inactivar"}
+                      </button>
+                    </form>
+                  </div>
                 </div>
                 <details className="mt-3 border-t border-base-200 pt-3">
                   <summary className="cursor-pointer text-sm font-medium text-base-content/70">

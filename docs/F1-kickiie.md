@@ -1,6 +1,6 @@
 # Kickiie — Fase 1 (F1) Núcleo
 
-**Estado:** Implementado en código (pendiente aplicar migración en Supabase)  
+**Estado:** Implementado (migración aplicable en Supabase via 009; F2–F5 en 010–013)  
 **Fecha:** 10 de agosto de 2026  
 **Producto:** Kickiie (marca) · Primera academia: **Ronin Defense**
 
@@ -21,8 +21,8 @@ La **Fase 1** es el núcleo operativo de Kickiie sin pagos ni kiosco:
 **Hito funcional F1:**  
 Admin de Ronin inicia sesión → reclama academia (si es el primero) → crea familia + tutor + alumno → lista alumnos y puede inactivar/reactivar.
 
-**Fuera de F1 (siguiente):**  
-F2 pagos · F3 kiosco QR · F4 docs/PDF · F5 inactividad automática.
+**Fuera de F1 (siguientes fases, ver [docs/F2-F5-kickiie.md](./F2-F5-kickiie.md)):**  
+F2 pagos · F3 kiosco QR · F4 docs/PDF · F5 inactividad automática — **implementado**.
 
 ---
 

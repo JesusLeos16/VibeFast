@@ -88,7 +88,14 @@ export default async function AlumnosPage({ searchParams }) {
                 className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
               >
                 <div className="min-w-0">
-                  <p className="truncate font-medium">{a.nombre}</p>
+                  <p className="truncate font-medium">
+                    <Link
+                      href={`/alumnos/${a.id}`}
+                      className="hover:text-primary hover:underline"
+                    >
+                      {a.nombre}
+                    </Link>
+                  </p>
                   <p className="text-sm text-base-content/60">
                     {cintaLabel(a.cinta)}
                     {edad != null ? ` · ${edad} años` : ""}
@@ -96,6 +103,9 @@ export default async function AlumnosPage({ searchParams }) {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Link href={`/alumnos/${a.id}`} className="btn btn-ghost btn-xs">
+                    Expediente
+                  </Link>
                   {a.familia_id && (
                     <Link
                       href={`/familias/${a.familia_id}`}

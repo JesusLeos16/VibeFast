@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { claimRoninAdmin, getAcademyContext } from "@/lib/kickiie/academy"
 import { isValidCinta } from "@/lib/kickiie/cintas"
+import { logEvento } from "@/lib/kickiie/eventos"
 
 async function requireMember() {
   const ctx = await getAcademyContext()
@@ -205,14 +206,23 @@ export async function updateAlumnoF1(formData) {
       cinta_despues: cinta,
       changed_by: user.id,
     })
+    await logEvento(supabase, {
+      academia_id: academia.id,
+      entity_type: "alumno",
+      entity_id: id,
+      tipo: "cinta",
+      actor_id: user.id,
+      meta: { cinta_antes: prev.cinta, cinta_despues: cinta },
+    })
   }
 
   revalidatePath("/alumnos")
+  revalidatePath(`/alumnos/${id}`)
   if (prev.familia_id) revalidatePath(`/familias/${prev.familia_id}`)
 }
 
 export async function toggleAlumnoStatus(formData) {
-  const { supabase, academia } = await requireMember()
+  const { supabase, academia, user } = await requireMember()
   const id = formData.get("id")?.toString()
   const status = formData.get("status")?.toString()
   if (!id) return
@@ -226,7 +236,19 @@ export async function toggleAlumnoStatus(formData) {
     .select("familia_id")
     .maybeSingle()
 
+  if (row) {
+    await logEvento(supabase, {
+      academia_id: academia.id,
+      entity_type: "alumno",
+      entity_id: id,
+      tipo: "status_alumno",
+      actor_id: user.id,
+      meta: { status: next, anterior: status },
+    })
+  }
+
   revalidatePath("/alumnos")
+  revalidatePath(`/alumnos/${id}`)
   revalidatePath("/dashboard")
   if (row?.familia_id) revalidatePath(`/familias/${row.familia_id}`)
 }

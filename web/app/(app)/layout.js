@@ -1,6 +1,13 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { Users, Home, UsersRound } from "lucide-react"
+import {
+  Users,
+  Home,
+  UsersRound,
+  Wallet,
+  ClipboardCheck,
+  ScanLine,
+} from "lucide-react"
 import config from "@/config"
 import { getUser } from "@/lib/supabase/server"
 import UserMenu from "@/components/auth/UserMenu"
@@ -10,6 +17,9 @@ const NAV = [
   { href: "/dashboard", label: "Inicio", icon: Home },
   { href: "/familias", label: "Familias", icon: UsersRound },
   { href: "/alumnos", label: "Alumnos", icon: Users },
+  { href: "/pagos", label: "Pagos", icon: Wallet },
+  { href: "/asistencias", label: "Asistencias", icon: ClipboardCheck },
+  { href: "/kiosco", label: "Kiosco", icon: ScanLine },
 ]
 
 export default async function AppLayout({ children }) {
