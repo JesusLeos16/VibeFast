@@ -1,19 +1,17 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { Users, MessageSquare, Bot } from "lucide-react"
+import { Users, Home, UsersRound } from "lucide-react"
 import config from "@/config"
 import { getUser } from "@/lib/supabase/server"
 import UserMenu from "@/components/auth/UserMenu"
 import Logo from "@/components/Logo"
 
 const NAV = [
-  { href: "/dashboard", label: "Alumnos", icon: Users },
-  { href: "/chat", label: "Chat", icon: MessageSquare },
-  { href: "/agent", label: "Agente", icon: Bot },
+  { href: "/dashboard", label: "Inicio", icon: Home },
+  { href: "/familias", label: "Familias", icon: UsersRound },
+  { href: "/alumnos", label: "Alumnos", icon: Users },
 ]
 
-// Layout de la zona privada. El middleware ya bloquea sin sesión,
-// pero revalidamos aquí para tener el `user` y proteger por si acaso.
 export default async function AppLayout({ children }) {
   const user = await getUser()
   if (!user) redirect(config.auth.loginUrl)

@@ -1,50 +1,48 @@
 import { createClient } from "@/lib/supabase/server"
+import { isValidCinta } from "@/lib/kickiie/cintas"
 
-// Tool: crea un alumno en la academia del instructor autenticado.
+// Tool F1: crea un alumno en la academia del usuario (requiere familia_id).
 export const crearAlumno = {
   name: "crear_alumno",
   description:
-    "Crea un nuevo alumno en la academia del instructor autenticado.",
+    "Crea un alumno en una familia de la academia del instructor. Requiere familia_id.",
   parameters: {
     type: "object",
     properties: {
-      nombre: { type: "string", description: "Nombre completo del alumno." },
-      grado: {
+      familia_id: { type: "string", description: "UUID de la familia." },
+      nombre: { type: "string", description: "Nombre del alumno." },
+      cinta: {
         type: "string",
-        description: "Grado o cinturón (ej. Cinturón azul).",
+        description: "Código de cinta Lima Lama (ej. blanca, verde_2).",
       },
-      grupo: { type: "string", description: "Grupo u horario (opcional)." },
-      email_tutor: {
-        type: "string",
-        description: "Email del tutor/papá autorizado (opcional).",
-      },
-      notas: { type: "string", description: "Notas opcionales." },
     },
-    required: ["nombre"],
+    required: ["familia_id", "nombre"],
     additionalProperties: false,
   },
-  async execute({
-    nombre,
-    grado = "Cinturón blanco",
-    grupo = null,
-    email_tutor = null,
-    notas = null,
-  }) {
+  async execute({ familia_id, nombre, cinta = "blanca" }) {
     const supabase = await createClient()
     const {
       data: { user },
     } = await supabase.auth.getUser()
     if (!user) throw new Error("No autenticado")
 
+    const { data: membership } = await supabase
+      .from("memberships")
+      .select("academia_id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .maybeSingle()
+    if (!membership) throw new Error("Sin academia asignada")
+
+    const code = isValidCinta(cinta) ? cinta : "blanca"
     const { data, error } = await supabase
       .from("alumnos")
       .insert({
-        user_id: user.id,
+        academia_id: membership.academia_id,
+        familia_id,
         nombre,
-        grado,
-        grupo,
-        email_tutor,
-        notas,
+        cinta: code,
+        status: "active",
       })
       .select()
       .single()

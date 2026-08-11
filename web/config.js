@@ -28,6 +28,7 @@ const config = {
   },
 
   assets: {
+    heroDojo: "/kickiie/hero-dojo.png",
     heroCard: "/kickiie/hero-card.png",
     portalFamilias: "/kickiie/portal-familias.png",
     kiosco: "/kickiie/kiosco.png",
@@ -77,17 +78,17 @@ const config = {
   landing: {
     nav: [
       { label: "Sistema", href: "#sistema" },
-      { label: "Módulos", href: "#modulos" },
-      { label: "Credencial", href: "#credencial" },
-      { label: "FAQ", href: "#faq" },
+      { label: "Academias", href: "#modulos" },
+      { label: "Preguntas", href: "#faq" },
     ],
     navCta: { label: "Entrar a Kickiie", href: "/login" },
     navLogin: { label: "Entrar a Kickiie", href: "/login" },
     hero: {
-      eyebrow: "Gestión para academias",
-      title: "Tu academia, sin libretas ni caos.",
-      subtitle: "Controla alumnos, asistencias y familias desde un solo lugar.",
-      cta: { label: "Entrar al sistema", href: "/login" },
+      eyebrow: "Sistema para dojos",
+      title: "Tu academia en orden, desde la entrada.",
+      subtitle: "Alumnos, asistencias y familias conectados en un solo sistema.",
+      cta: { label: "Entrar a Kickiie", href: "/login" },
+      secondaryCta: { label: "Ver el sistema", href: "#modulos" },
       card: {
         memberLabel: "MIEMBRO",
         memberName: "Carlos Silva",

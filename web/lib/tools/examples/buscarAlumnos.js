@@ -1,9 +1,8 @@
 import { createClient } from "@/lib/supabase/server"
 
-// Tool: busca alumnos del instructor por nombre.
 export const buscarAlumnos = {
   name: "buscar_alumnos",
-  description: "Busca alumnos del instructor por coincidencia en el nombre.",
+  description: "Busca alumnos de la academia del instructor por nombre.",
   parameters: {
     type: "object",
     properties: {
@@ -19,10 +18,18 @@ export const buscarAlumnos = {
     } = await supabase.auth.getUser()
     if (!user) throw new Error("No autenticado")
 
+    const { data: membership } = await supabase
+      .from("memberships")
+      .select("academia_id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .maybeSingle()
+    if (!membership) throw new Error("Sin academia asignada")
+
     const { data, error } = await supabase
       .from("alumnos")
-      .select("id, nombre, grado, grupo, email_tutor, status")
-      .eq("user_id", user.id)
+      .select("id, nombre, cinta, status, familia_id")
+      .eq("academia_id", membership.academia_id)
       .ilike("nombre", `%${query}%`)
     if (error) throw new Error(error.message)
     return { ok: true, alumnos: data }
