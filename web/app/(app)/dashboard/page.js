@@ -2,7 +2,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { getAcademyContext } from "@/lib/kickiie/academy"
 import { estadoFinanciero } from "@/lib/kickiie/pagos"
-import { formatDateISO } from "@/lib/kickiie/pagos"
+import { fechaHoyAcademia } from "@/lib/kickiie/timezone"
 import ChequeoInactividadButton from "@/components/kickiie/ChequeoInactividadButton"
 
 export const metadata = { title: "Inicio" }
@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   const { academia, supabase, membership } = await getAcademyContext()
   if (!membership) redirect("/setup")
 
-  const hoy = formatDateISO(new Date())
+  const hoy = fechaHoyAcademia()
 
   const [
     { count: nFamilias },

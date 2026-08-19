@@ -12,23 +12,38 @@
 import { crearAlumno } from "./examples/crearAlumno.js"
 import { buscarAlumnos } from "./examples/buscarAlumnos.js"
 import { enviarEmail } from "./examples/enviarEmail.js"
+import { registrarSeguimiento } from "./examples/registrarSeguimiento.js"
 
 const registry = new Map()
 
-export function registerTool({ name, description, parameters, execute }) {
-  registry.set(name, { name, description, parameters, execute })
+export function registerTool({
+  name,
+  description,
+  parameters,
+  execute,
+  requiresConfirmation = false,
+}) {
+  registry.set(name, {
+    name,
+    description,
+    parameters,
+    execute,
+    requiresConfirmation,
+  })
 }
 
 // Formato que espera OpenAI en el campo `tools` de chat.completions.
-export function getOpenAITools() {
-  return [...registry.values()].map((t) => ({
-    type: "function",
-    function: {
-      name: t.name,
-      description: t.description,
-      parameters: t.parameters,
-    },
-  }))
+export function getOpenAITools({ includeConfirmationRequired = false } = {}) {
+  return [...registry.values()]
+    .filter((t) => includeConfirmationRequired || !t.requiresConfirmation)
+    .map((t) => ({
+      type: "function",
+      function: {
+        name: t.name,
+        description: t.description,
+        parameters: t.parameters,
+      },
+    }))
 }
 
 export async function executeTool(name, args) {
@@ -38,4 +53,9 @@ export async function executeTool(name, args) {
 }
 
 // Auto-registro de los ejemplos incluidos.
-;[crearAlumno, buscarAlumnos, enviarEmail].forEach(registerTool)
+;[
+  crearAlumno,
+  buscarAlumnos,
+  enviarEmail,
+  { ...registrarSeguimiento, requiresConfirmation: true },
+].forEach(registerTool)

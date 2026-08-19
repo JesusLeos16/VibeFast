@@ -2,7 +2,10 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { getAcademyContext } from "@/lib/kickiie/academy"
 import { cintaLabel } from "@/lib/kickiie/cintas"
-import { formatDateISO } from "@/lib/kickiie/pagos"
+import {
+  fechaHoyAcademia,
+  formatHoraAcademia,
+} from "@/lib/kickiie/timezone"
 import RegistrarManualForm from "@/components/kickiie/RegistrarManualForm"
 
 export const metadata = { title: "Asistencias" }
@@ -11,7 +14,7 @@ export default async function AsistenciasPage() {
   const { academia, supabase, membership } = await getAcademyContext()
   if (!membership) redirect("/setup")
 
-  const hoy = formatDateISO(new Date())
+  const hoy = fechaHoyAcademia()
 
   const [{ data: lista }, { data: alumnos }] = await Promise.all([
     supabase
@@ -68,10 +71,7 @@ export default async function AsistenciasPage() {
                   <p className="text-base-content/60">
                     {cintaLabel(a.alumnos?.cinta)} · {a.origen}
                     {a.scanned_at
-                      ? ` · ${new Date(a.scanned_at).toLocaleTimeString("es-MX", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}`
+                      ? ` · ${formatHoraAcademia(a.scanned_at)}`
                       : ""}
                   </p>
                 </div>

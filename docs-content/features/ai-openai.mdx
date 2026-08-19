@@ -6,8 +6,9 @@ order: 4
 
 <StackBadge tech={["openai"]} />
 
-<Callout type="info">
-Documentación completa disponible cuando termine Fase 3.
+<Callout type="success">
+La capa AI ya está activa: chat streaming y el intérprete de seguimientos de
+Kickiie con structured outputs.
 </Callout>
 
 ## Helpers principales
@@ -19,5 +20,19 @@ import { generateObject } from "@/lib/openai/structured"
 
 - `streamChat(messages)` — chat streaming para UIs interactivas.
 - `generateObject(schema, prompt)` — JSON tipado garantizado por el modelo.
+
+## Kickiie AI · seguimiento_v1
+
+La ruta `POST /api/ai/structured` recibe un objeto con `prompt` y devuelve una salida
+validada con Zod. El contexto de academia se obtiene de la sesión del usuario;
+el cliente no envía `academy_id`.
+
+El contrato incluye `student`, `type`, `summary`, `return_date`, `priority`,
+`suggested_action` y `missing_information`.
+
+La interpretación inicial es de solo lectura. Después de seleccionar un alumno,
+la pantalla puede pedir confirmación explícita y llamar la tool controlada
+`registrar_seguimiento`; el backend vuelve a validar la academia y el alumno
+antes de escribir en Supabase.
 
 Configuración de modelos y costo en `config.ai`.

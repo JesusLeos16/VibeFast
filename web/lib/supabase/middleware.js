@@ -28,6 +28,7 @@ const PROTECTED_PREFIXES = [
   "/pagos",
   "/asistencias",
   "/kiosco",
+  "/ai",
 ]
 
 export async function updateSession(request) {

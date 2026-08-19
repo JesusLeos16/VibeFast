@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { getAcademyContext } from "@/lib/kickiie/academy"
 
 export const buscarAlumnos = {
   name: "buscar_alumnos",
@@ -12,25 +12,20 @@ export const buscarAlumnos = {
     additionalProperties: false,
   },
   async execute({ query }) {
-    const supabase = await createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
+    const { supabase, user, membership, academia } = await getAcademyContext()
     if (!user) throw new Error("No autenticado")
+    if (!membership || !academia) throw new Error("Sin academia asignada")
 
-    const { data: membership } = await supabase
-      .from("memberships")
-      .select("academia_id")
-      .eq("user_id", user.id)
-      .limit(1)
-      .maybeSingle()
-    if (!membership) throw new Error("Sin academia asignada")
+    const cleanQuery = query?.trim()
+    if (!cleanQuery) return { ok: true, alumnos: [] }
 
     const { data, error } = await supabase
       .from("alumnos")
       .select("id, nombre, cinta, status, familia_id")
-      .eq("academia_id", membership.academia_id)
-      .ilike("nombre", `%${query}%`)
+      .eq("academia_id", academia.id)
+      .ilike("nombre", `%${cleanQuery}%`)
+      .order("nombre", { ascending: true })
+      .limit(20)
     if (error) throw new Error(error.message)
     return { ok: true, alumnos: data }
   },

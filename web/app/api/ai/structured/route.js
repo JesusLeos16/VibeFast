@@ -1,57 +1,77 @@
-// ============================================================
-// POST /api/ai/structured
-// ------------------------------------------------------------
-// Body:  { prompt: string, schemaName: string }
-// Resp:  JSON con el objeto generado y validado contra el schema.
-//        400 si falta el prompt o si schemaName es desconocido.
-//
-// Los schemas viven inline como demo (Fase 3). En tu producto los
-// moverías a su propio módulo y los resolverías por nombre igual.
-// ============================================================
-
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { generateObject } from "@/lib/openai/structured"
+import { getAcademyContext } from "@/lib/kickiie/academy"
+import { buildSeguimientoPrompt, seguimientoSchema } from "@/lib/kickiie/ai"
 
-// Registro de schemas disponibles, resueltos por `schemaName`.
-const schemas = {
-  // Extrae una tarea estructurada de texto libre.
-  tarea: z.object({
-    title: z.string().describe("Título corto de la tarea"),
-    priority: z.enum(["baja", "media", "alta"]).describe("Prioridad"),
-    dueDate: z.string().describe("Fecha límite en formato ISO (YYYY-MM-DD)"),
-  }),
-  // Extrae los datos de un contacto de un mensaje.
-  contacto: z.object({
-    name: z.string().describe("Nombre completo"),
-    email: z.string().describe("Correo electrónico"),
-    reason: z.string().describe("Motivo del contacto"),
-  }),
-}
+const inputSchema = z.object({
+  prompt: z.string().trim().min(1).max(2000),
+})
 
 export async function POST(request) {
+  let body
+
   try {
-    const { prompt, schemaName } = await request.json()
-
-    if (!prompt || typeof prompt !== "string") {
-      return NextResponse.json({ error: "prompt requerido." }, { status: 400 })
-    }
-
-    const schema = schemas[schemaName]
-    if (!schema) {
-      const disponibles = Object.keys(schemas).join(", ")
-      return NextResponse.json(
-        { error: `schemaName desconocido: "${schemaName}". Disponibles: ${disponibles}.` },
-        { status: 400 }
-      )
-    }
-
-    const parsed = await generateObject(schema, prompt)
-    return NextResponse.json(parsed)
+    body = await request.json()
   } catch (err) {
     return NextResponse.json(
-      { error: "Error procesando la solicitud." },
-      { status: 500 }
+      { error: "El cuerpo de la solicitud no es válido." },
+      { status: 400 }
+    )
+  }
+
+  const parsedInput = inputSchema.safeParse(body)
+  if (!parsedInput.success) {
+    return NextResponse.json(
+      { error: "Escribe una nota de hasta 2000 caracteres." },
+      { status: 400 }
+    )
+  }
+
+  // La academia se obtiene de la sesión en el servidor. El cliente nunca
+  // puede elegir un academy_id para cambiar el contexto de la IA.
+  let context
+  try {
+    context = await getAcademyContext()
+  } catch (err) {
+    console.error("[ai/structured] contexto no disponible:", err?.message)
+    return NextResponse.json(
+      { error: "No pudimos verificar la academia activa." },
+      { status: 503 }
+    )
+  }
+
+  if (!context.user) {
+    return NextResponse.json({ error: "Necesitas iniciar sesión." }, { status: 401 })
+  }
+
+  if (!context.membership || !context.academia) {
+    return NextResponse.json(
+      { error: "Configura o reclama una academia antes de usar Kickiie AI." },
+      { status: 403 }
+    )
+  }
+
+  try {
+    const result = await generateObject(
+      seguimientoSchema,
+      buildSeguimientoPrompt(parsedInput.data.prompt)
+    )
+
+    return NextResponse.json({
+      schema: "seguimiento_v1",
+      mode: "read_only",
+      result,
+    })
+  } catch (err) {
+    console.error("[ai/structured] OpenAI error:", err?.message)
+    return NextResponse.json(
+      {
+        error: process.env.OPENAI_API_KEY
+          ? "No pudimos interpretar la nota. Intenta de nuevo en unos segundos."
+          : "Falta configurar OPENAI_API_KEY en web/.env.local.",
+      },
+      { status: process.env.OPENAI_API_KEY ? 502 : 503 }
     )
   }
 }

@@ -7,6 +7,7 @@ import {
   Wallet,
   ClipboardCheck,
   ScanLine,
+  Sparkles,
 } from "lucide-react"
 import config from "@/config"
 import { getUser } from "@/lib/supabase/server"
@@ -20,6 +21,7 @@ const NAV = [
   { href: "/pagos", label: "Pagos", icon: Wallet },
   { href: "/asistencias", label: "Asistencias", icon: ClipboardCheck },
   { href: "/kiosco", label: "Kiosco", icon: ScanLine },
+  { href: "/ai", label: "Kickiie AI", icon: Sparkles },
 ]
 
 export default async function AppLayout({ children }) {

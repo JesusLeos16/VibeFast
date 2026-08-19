@@ -7,8 +7,8 @@ import { logEvento } from "@/lib/kickiie/eventos"
 import {
   calcularMontoEsperado,
   calcularNuevoVencimiento,
-  formatDateISO,
 } from "@/lib/kickiie/pagos"
+import { fechaHoyAcademia } from "@/lib/kickiie/timezone"
 
 async function requireMember() {
   const ctx = await getAcademyContext()
@@ -39,7 +39,7 @@ export async function registrarPago(formData) {
   const periodos = Math.max(1, parseInt(formData.get("periodos") || "1", 10) || 1)
   const metodo = formData.get("metodo")?.toString() || "efectivo"
   const fechaPago =
-    formData.get("fecha_pago")?.toString().trim() || formatDateISO(new Date())
+    formData.get("fecha_pago")?.toString().trim() || fechaHoyAcademia()
   const notas = formData.get("notas")?.toString().trim() || null
 
   const { periodo_inicio, periodo_fin, fecha_vencimiento } =

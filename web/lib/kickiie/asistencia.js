@@ -1,5 +1,6 @@
 import { estadoFinanciero } from "./pagos"
 import { cintaLabel } from "./cintas"
+import { fechaHoyAcademia } from "./timezone"
 
 /**
  * Registra asistencia 1/día. No expone deuda al alumno.
@@ -56,12 +57,8 @@ export async function registrarAsistencia(
     }
   }
 
-  const hoy = new Date()
-  const fecha = [
-    hoy.getFullYear(),
-    String(hoy.getMonth() + 1).padStart(2, "0"),
-    String(hoy.getDate()).padStart(2, "0"),
-  ].join("-")
+  // Día operativo en Mexico City (no UTC del server action)
+  const fecha = fechaHoyAcademia()
 
   const { data: existing } = await supabase
     .from("asistencias")

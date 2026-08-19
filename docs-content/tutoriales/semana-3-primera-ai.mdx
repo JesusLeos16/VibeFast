@@ -8,8 +8,10 @@ order: 3
 
 **20 – 22 jul 2026 · Técnico**
 
-<Callout type="info">
-Esta página se completa cuando termine <strong>Fase 3</strong> del boilerplate (Capa AI). Por ahora muestra el contrato.
+<Callout type="success">
+  Semana 3 aplicada a Kickiie: ya puedes interpretar notas administrativas y
+  revisar el JSON validado desde <code>/ai</code>. La interpretación sigue siendo
+  una etapa de revisión; la escritura confirmada se explica en Semana 4.
 </Callout>
 
 ## Qué vas a tener al final
@@ -36,13 +38,54 @@ const resultado = await generateObject(schema, "Analiza este review: ...")
 // resultado.sentimiento === "positivo"  ← garantizado, tipado
 ```
 
-## Pasos (preview)
+## Pasos
 
 1. Agregar `OPENAI_API_KEY` a `.env.local`.
 2. Importar el helper `generateObject`.
 3. Definir el schema Zod de lo que quieres devolver.
 4. Llamar desde un Server Action o API route.
 5. Renderizar el resultado en una página.
+
+## La capacidad de Kickiie
+
+La primera capacidad no intenta resolver toda la operación de la academia. Se
+enfoca en una tarea concreta: convertir una nota libre en un seguimiento que un
+administrador pueda revisar.
+
+Ejemplo de entrada:
+
+> “La mamá de Diego dijo que no vendrá dos semanas porque salen de viaje y
+> regresa el 28.”
+
+La salida usa el contrato `seguimiento_v1` e incluye:
+
+- alumno mencionado;
+- tipo de nota;
+- resumen;
+- referencia de regreso, sin inventar mes o año;
+- prioridad;
+- acción sugerida;
+- información faltante para revisar.
+
+## Cómo probarlo
+
+1. Inicia sesión en Kickiie y entra a **Kickiie AI** desde el menú lateral.
+2. Escribe una nota o usa uno de los ejemplos.
+3. Selecciona **Interpretar nota**.
+4. Revisa los campos y abre **Ver JSON validado**.
+
+La salida estructurada no modifica alumnos, pagos o asistencias. La pantalla
+puede continuar hacia el flujo de Semana 4, pero solo guarda un seguimiento
+después de seleccionar un alumno y confirmar explícitamente.
+
+Para ejecutarlo necesitas `OPENAI_API_KEY` en `web/.env.local`.
+
+## Decisión de producto
+
+Elegimos notas y seguimientos porque el mismo contrato puede crecer en Semana 4:
+primero se interpreta la intención, después se busca al alumno y solo tras la
+confirmación humana se podrá llamar una tool de escritura. La IA interpreta; el
+backend seguirá decidiendo y validando.
 
 ## Entregable
 

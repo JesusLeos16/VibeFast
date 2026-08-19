@@ -8,8 +8,9 @@ order: 4
 
 **27 – 29 jul 2026 · Técnico**
 
-<Callout type="info">
-Esta página se completa cuando termine <strong>Fase 3</strong> del boilerplate.
+<Callout type="success">
+  Semana 4 aplicada a Kickiie: la pantalla interpreta una nota, busca al alumno
+  y ejecuta <code>registrar_seguimiento</code> únicamente después de confirmar.
 </Callout>
 
 ## Qué vas a tener al final
@@ -25,13 +26,36 @@ Tool use es darle al modelo una lista de **funciones que puede invocar**. El mod
 
 VibeFast usa un **registry pattern**: defines la tool una vez, está disponible tanto para tool use (OpenAI) como para MCP (Sem 5).
 
-## Pasos (preview)
+## Flujo de Kickiie
 
-1. Crear una tool en `lib/tools/examples/`.
-2. Registrarla con `registerTool({ name, description, parameters, execute })`.
-3. Probar desde `/chat`.
-4. Armar un flujo LangGraph que use 2+ tools.
+1. La entrada libre pasa por structured outputs y produce `seguimiento_v1`.
+2. Kickiie busca el alumno mencionado dentro de la academia activa.
+3. Si hay varias coincidencias, el administrador selecciona la correcta.
+4. La UI muestra qué se guardará y pide confirmación explícita.
+5. La ruta llama `registrar_seguimiento`, que valida de nuevo el alumno y la
+   academia antes de insertar.
+6. La invocación queda registrada en `tool_calls` y el evento en
+   `eventos_historial`.
+
+## Tool `registrar_seguimiento`
+
+La tool vive en `web/lib/tools/examples/registrarSeguimiento.js` y se registra
+en el registry central. No recibe `academy_id` desde el navegador: obtiene la
+academia desde la sesión del usuario.
+
+La migración `014_ai_seguimientos.sql` guarda:
+
+- alumno y academia;
+- tipo, resumen, prioridad y referencia de regreso;
+- nota original y origen `kickiie_ai`;
+- usuario que registró el seguimiento;
+- estado e idempotency key para evitar duplicar un reintento.
+
+La confirmación está representada también en el contrato de la ruta. Un agente
+genérico no recibe automáticamente esta tool mientras no exista un flujo de
+confirmación equivalente; la pantalla de Kickiie es el primer consumidor seguro.
 
 ## Entregable
 
-Un flujo / acción de IA que ejecuta funciones reales de tu producto.
+Una acción de IA que ejecuta una función real de Kickiie después de confirmar y
+deja trazabilidad de la tool utilizada.
